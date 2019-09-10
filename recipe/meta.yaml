@@ -1,0 +1,44 @@
+{% set name = "rixs" %}
+{% set version = "0.0.3" %}
+{% set file_ext = "tar.gz" %}
+{% set hash_type = "sha256" %}
+{% set hash_value = "9c563f92f34db46cd9d01ac1ba3e9c7b41cf206d42dc635bf031ad8ec1cbc0db" %}
+
+package:
+  name: '{{ name|lower }}'
+  version: '{{ version }}'
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.{{ file_ext }}
+  '{{ hash_type }}': '{{ hash_value }}'
+
+build:
+  noarch: python
+  number: 0
+  script: "{{ PYTHON }} -m pip install . --no-deps -vv"
+
+requirements:
+  host:
+    - python  # [py>=36]
+    - pip
+  run:
+    - python  # [py>=36]
+    - matplotlib
+    - numpy
+    - pandas
+    - scipy
+
+test:
+  imports:
+    - rixs
+  requires:
+    - pytest
+  commands:
+    - pytest --pyargs rixs.tests
+
+about:
+  home: https://github.com/scikit-beam/rixs
+  license: BSD (3-clause)
+  license_family: BSD
+  license_file: LICENSE
+  summary: Analysis tools for resonant inelastic xray scattering.
